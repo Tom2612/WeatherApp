@@ -1,3 +1,4 @@
+import { backgrounds, backgroundSelect } from './backgroundImages.js';
 const locationInput = document.querySelector('#location');
 const form = document.querySelector('form');
 const container = document.querySelector('.container');
@@ -153,12 +154,19 @@ function createLayout() {
 }
 
 form.addEventListener('submit', async (e) => {
+    if (!locationInput.value) {alert('Please search for somewhere.');return;}
     e.preventDefault();
+    try {
     const searchLocation = await getWeather(locationInput.value);
     console.log(searchLocation);
     fillInfo(searchLocation);
+    backgroundSelect(searchLocation.weather);
     locationInput.value = '';
     addListeners();
+    } catch (error) {
+        console.log(error);
+        alert('Woops, that\'s not a place!');
+    }
 });
 
 createLayout();
